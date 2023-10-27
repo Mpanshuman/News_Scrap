@@ -1,7 +1,17 @@
-{% if not news.vars %}
-no news...
+{% if news['status'] == 'error' %}
+{{news['error']}}
 {% else %}
-{{news}}
-{% endif %}
 
-{{news}}
+{% for articles in news['articles'] %}
+
+<div class="card my-4">
+    <div class="card-body">
+      <h5 class="card-title">{{articles['title']}}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">{{articles['author']}}: {{articles['publishedAt']}}</h6>
+      <p class="card-text">{{articles['description']}}</p>
+      <a href={{articles['url']}} class="card-link">Read article</a>
+    </div>
+  </div>
+
+{% endfor %}
+{% endif %}

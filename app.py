@@ -2,10 +2,6 @@ from flask import Flask, render_template, request
 from newsapi import NewsApiClient
 
 # from pandas.io.json import json_normalize
-import pandas as pd
-from bs4 import BeautifulSoup
-from operator import attrgetter
-import pycountry
 
 app = Flask(__name__)
 newsapi = NewsApiClient(api_key="abc08bbe1747418c8f71eeed0119d4ac")
@@ -14,7 +10,63 @@ newsapi = NewsApiClient(api_key="abc08bbe1747418c8f71eeed0119d4ac")
 def getCountries():
     """ae ar at au be bg br ca ch cn co cu cz de eg fr gb gr hk hu id ie il in it jp kr lt lv ma mx my ng nl no nz ph pl pt ro rs ru sa se sg si sk th tr tw ua us ve za"""
     # fetch only above states
-    return list(map(attrgetter("alpha_2", "name"), list(pycountry.countries)))
+    avaibale_countries = [
+        ("AE", "United Arab Emirates"),
+        ("AR", "Argentina"),
+        ("AU", "Australia"),
+        ("AT", "Austria"),
+        ("BE", "Belgium"),
+        ("BG", "Bulgaria"),
+        ("BR", "Brazil"),
+        ("CA", "Canada"),
+        ("CH", "Switzerland"),
+        ("CN", "China"),
+        ("CO", "Colombia"),
+        ("CU", "Cuba"),
+        ("CZ", "Czechia"),
+        ("DE", "Germany"),
+        ("EG", "Egypt"),
+        ("FR", "France"),
+        ("GB", "United Kingdom"),
+        ("GR", "Greece"),
+        ("HK", "Hong Kong"),
+        ("HU", "Hungary"),
+        ("ID", "Indonesia"),
+        ("IN", "India"),
+        ("IE", "Ireland"),
+        ("IL", "Israel"),
+        ("IT", "Italy"),
+        ("JP", "Japan"),
+        ("KR", "Korea, Republic of"),
+        ("LT", "Lithuania"),
+        ("LV", "Latvia"),
+        ("MA", "Morocco"),
+        ("MX", "Mexico"),
+        ("MY", "Malaysia"),
+        ("NG", "Nigeria"),
+        ("NL", "Netherlands"),
+        ("NO", "Norway"),
+        ("NZ", "New Zealand"),
+        ("PH", "Philippines"),
+        ("PL", "Poland"),
+        ("PT", "Portugal"),
+        ("RO", "Romania"),
+        ("RU", "Russian Federation"),
+        ("SA", "Saudi Arabia"),
+        ("SG", "Singapore"),
+        ("RS", "Serbia"),
+        ("SK", "Slovakia"),
+        ("SI", "Slovenia"),
+        ("SE", "Sweden"),
+        ("TH", "Thailand"),
+        ("TR", "Turkey"),
+        ("TW", "Taiwan, Province of China"),
+        ("UA", "Ukraine"),
+        ("US", "United States"),
+        ("VE", "Venezuela, Bolivarian Republic of"),
+        ("ZA", "South Africa"),
+    ]
+    return avaibale_countries
 
 
 def top_headlines(country, category):
@@ -24,11 +76,12 @@ def top_headlines(country, category):
         )
         if top_headlines["totalResults"] > 0:
             # dic = newdf.set_index("title")["url"].to_dict()
-            return top_headlines["articles"]
-        return {"data": "No News Found"}
+            print(top_headlines)
+            return top_headlines
+        return {"status": "error", "error": "No News Found"}
     except Exception as error:
         print(error)
-        return {"error": error}
+        return {"status": "error", "error": error}
 
 
 @app.route("/", methods=["GET", "POST"])

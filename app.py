@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request
 from newsapi import NewsApiClient
 
+# from wsgi import app
+
 # from pandas.io.json import json_normalize
 
 app = Flask(__name__)
@@ -105,7 +107,12 @@ def hello_world():
     return render_template("index.html", context=context)
 
 
+@app.route("/about")
+def about():
+    return "Hello this is about page."
+
+
 # main driver function
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", debug=True)
     # top_headlines()
